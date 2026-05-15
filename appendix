@@ -1,1 +1,69 @@
+1. TEAM CONTRIBUTION
+Athira — 65% Contribution
+Lead Developer and Product Owner
+Built most of the Java application and core features
+Worked on debugging, archive functions, search filters, bookmarks, and subscriptions
+Antwaan — 35% Contribution
+Researcher and Tester
+Researched fashion magazine trends and competitors
+Tested the MVP, gathered feedback, and helped with presentation slides/documentation
+
+2. JAVA CONCEPTS APPLIED
+Classes and Objects
+Constructors
+ArrayLists
+Methods and Parameters
+Loops (for, while)
+Conditional Statements (if/else)
+Scanner User Input
+Encapsulation
+Exception Handling (try/catch)
+
+3. CHALLENGES & SOLUTIONS
+Challenge: Compilation and file naming errors
+ Solution: Fixed class/file naming issues and corrected misplaced braces.
+Challenge: Organizing multiple features
+ Solution: Split the project into separate classes like Magazine, Archive, and Subscriber.
+Challenge: User input errors
+ Solution: Added validation and try/catch blocks to prevent crashes.
+
+4. PROJECT TIMELINE
+Week 1:
+Planned MVP features and researched competitors
+Built the archive and magazine classes
+Week 2:
+Added search, bookmarks, and subscription features
+Tested/debugged the program
+Finished slides and documentation
+5. HOW WE COLLABORATED
+We split the project based on our strengths. Athira mainly focused on coding and development, while Antwaan focused on research, testing, and presentation work. We communicated regularly to solve coding issues and improve the app together.
+
+6. VIABILITY TESTING
+We tested the MVP with students involved in Fusion Magazine and other fashion-focused students at Pace University.
+Feedback included:
+Users liked browsing vintage fashion archives
+The bookmark feature was useful for saving inspiration
+Search filters made finding magazines easier
+Changes made:
+Improved navigation
+Simplified issue browsing
+Added clearer bookmark interactions
+The testing showed strong interest in digital fashion archives and curated zine subscriptions.
+
+7. CITATIONS & EXTERNAL RESOURCES
+Research Sources:
+MRI-Simmons
+Washington Square News
+Competitor Research:
+Zinio
+Magzter
+Pocketmags
+Programming Resources:
+Stack Overflow
+Oracle Java Docs
+W3Schools Java
+ChatGPT (find and bugs that prevented the code from running)
+
+8. REFLECTIONS & LESSONS LEARNED
+This project helped us improve our Java programming, debugging, teamwork, and problem-solving skills. We learned how to build a functional MVP while combining technology with fashion and creative media.
 
