@@ -1,1 +1,403 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+// Magazine Class
+
+class Magazine {
+    private String title;
+    private String year;
+    private String season;
+    private ArrayList<String> articles;
+    private boolean bookmarked;
+
+    public Magazine(String title, String year, String season) {
+        this.title = title;
+        this.year = year;
+        this.season = season;
+        this.articles = new ArrayList<>();
+        this.bookmarked = false;
+    }
+
+    public void addArticle(String article) {
+        articles.add(article);
+    }
+
+    public void toggleBookmark() {
+        bookmarked = !bookmarked;   // FIX 3: was  =!  (no space), now = !
+    }
+
+    public String getTitle()  { return title; }
+    public String getYear()   { return year; }
+    public String getSeason() { return season; }
+    public boolean isBookmarked() { return bookmarked; }
+    public ArrayList<String> getArticles() { return articles; }
+
+    public void printSummary() {
+        String star;
+        if (bookmarked) {
+            star = "[SAVED]";
+        } else {
+            star = "[    ]";
+        }
+        System.out.println(star + "  " + title + "  |  " + season + " " + year);
+    }
+
+    public void printDetail() {
+        String bookmarkStatus;
+        if (bookmarked) {
+            bookmarkStatus = "Yes";
+        } else {
+            bookmarkStatus = "No";
+        }
+        System.out.println("  " + title.toUpperCase());
+        System.out.println("  Season: " + season);
+        System.out.println("  Year:   " + year);
+        System.out.println("  Bookmarked: " + bookmarkStatus);
+        System.out.println("  ARTICLES IN THIS ISSUE:");
+        for (int i = 0; i < articles.size(); i++) {
+            System.out.println("    " + (i + 1) + ". " + articles.get(i));
+        }
+    }
+}
+
+// Archive Class
+class Archive {
+    private ArrayList<Magazine> magazines;
+
+    public Archive() {
+        magazines = new ArrayList<>();
+    }
+
+    public void addMagazine(Magazine m) {
+        magazines.add(m);
+    }
+
+    public void printAll() {
+        System.out.println("ALL ISSUES (" + magazines.size() + ")");
+        System.out.println("     TITLE            |  SEASON  YEAR");
+        for (int i = 0; i < magazines.size(); i++) {
+            System.out.print("  [" + (i + 1) + "] ");
+            magazines.get(i).printSummary();
+        }
+    }
+
+    public ArrayList<Magazine> filterByYear(String year) {
+        ArrayList<Magazine> results = new ArrayList<>();
+        for (Magazine m : magazines) {
+            if (m.getYear().equalsIgnoreCase(year)) {
+                results.add(m);
+            }
+        }
+        return results;
+    }
+
+    public ArrayList<Magazine> filterByTitle(String title) {
+        ArrayList<Magazine> results = new ArrayList<>();
+        for (Magazine m : magazines) {
+            if (m.getTitle().toLowerCase().contains(title.toLowerCase())) {
+                results.add(m);
+            }
+        }
+        return results;
+    }
+
+    public ArrayList<Magazine> filterBySeason(String season) {
+        ArrayList<Magazine> results = new ArrayList<>();
+        for (Magazine m : magazines) {
+            if (m.getSeason().toLowerCase().contains(season.toLowerCase())) {
+                results.add(m);
+            }
+        }
+        return results;
+    }
+
+    public void printList(ArrayList<Magazine> list) {
+        if (list.isEmpty()) {
+            System.out.println("  No results found.");
+            return;
+        }
+        System.out.println("     TITLE            |  SEASON  YEAR");
+        for (int i = 0; i < list.size(); i++) {
+            System.out.print("  [" + (i + 1) + "] ");
+            list.get(i).printSummary();
+        }
+    }
+
+    public ArrayList<Magazine> getBookmarks() {
+        ArrayList<Magazine> results = new ArrayList<>();
+        for (Magazine m : magazines) {
+            if (m.isBookmarked()) {
+                results.add(m);
+            }
+        }
+        return results;
+    }
+
+    public Magazine get(int index) {
+        return magazines.get(index);
+    }
+
+    public int size() {
+        return magazines.size();
+    }
+}
+
+// Subscriber Class
+class Subscriber {
+    private String name;
+    private String email;
+    private String address;
+
+    public Subscriber(String name, String email, String address) {
+        this.name = name;
+        this.email = email;
+        this.address = address;
+    }
+
+    public void printConfirmation() {
+        System.out.println("SUBSCRIPTION CONFIRMED");
+        System.out.println("Name: " + name);
+        System.out.println("Email: " + email);
+        System.out.println("Address: " + address);
+        System.out.println("Your first zine ships next month!");
+    }
+}
+
+// Main Class
+public class DigitalMargiela {
+
+    static Archive archive = new Archive();
+    static Scanner scanner = new Scanner(System.in);
+    static ArrayList<Subscriber> subscribers = new ArrayList<>();
+
+    public static void main(String[] args) {
+        loadSampleData();
+
+        System.out.println("ARCHIVE - Vintage Fashion Magazine Vault");
+        System.out.println("Educational Use Only");
+
+        boolean running = true;
+        while (running) {
+            printMainMenu();
+            int choice = getIntInput("Enter choice: ");
+
+            if (choice == 1) {
+                browseAll();
+            } else if (choice == 2) {
+                searchFilter();
+            } else if (choice == 3) {
+                openIssue();
+            } else if (choice == 4) {
+                viewBookmarks();
+            } else if (choice == 5) {
+                submitNewIssue();
+            } else if (choice == 6) {
+                subscribeToZine();
+            } else if (choice == 7) {
+                running = false;
+            } else {
+                System.out.println("Invalid choice. Try again.");
+            }
+        }
+
+        System.out.println("Goodbye!");
+    }
+
+    static void printMainMenu() {
+        System.out.println("MAIN MENU");
+        System.out.println("  1. Browse All Issues");
+        System.out.println("  2. Search / Filter");
+        System.out.println("  3. Open an Issue");
+        System.out.println("  4. View Bookmarks");
+        System.out.println("  5. Submit a New Issue");
+        System.out.println("  6. Subscribe");
+        System.out.println("  7. Exit");
+    }
+
+    static void browseAll() {
+        archive.printAll();
+    }
+
+    static void searchFilter() {
+        System.out.println("FILTER BY:");
+        System.out.println("  1. Year");
+        System.out.println("  2. Magazine Title");
+        System.out.println("  3. Season");
+        int choice = getIntInput("Enter choice: ");
+
+        ArrayList<Magazine> results = new ArrayList<>();
+
+        if (choice == 1) {
+            System.out.print("Enter year: ");
+            String year = scanner.nextLine();
+            results = archive.filterByYear(year);
+            System.out.println("Results for year: " + year);
+            archive.printList(results);
+
+        } else if (choice == 2) {
+            System.out.print("Enter magazine name: ");
+            String title = scanner.nextLine();
+            results = archive.filterByTitle(title);
+            System.out.println("Results for magazine: " + title);
+            archive.printList(results);
+
+        } else if (choice == 3) {
+            System.out.print("Enter season (e.g. Spring, Fall): ");
+            String season = scanner.nextLine();
+            results = archive.filterBySeason(season);
+            System.out.println("Results for season: " + season);
+            archive.printList(results);
+
+        } else {
+            System.out.println("Invalid choice.");
+            return;
+        }
+
+        int pick = getIntInput("Open an issue? Enter number (or 0 to go back): ");
+        if (pick >= 1 && pick <= results.size()) {
+            openIssueDetail(results.get(pick - 1));
+        }
+    }
+
+    static void openIssue() {
+        archive.printAll();
+        int pick = getIntInput("Enter issue number to open (or 0 to go back): ");
+        if (pick >= 1 && pick <= archive.size()) {
+            openIssueDetail(archive.get(pick - 1));
+        }
+    }
+
+    static void openIssueDetail(Magazine mag) {
+        System.out.println();
+        mag.printDetail();
+        System.out.println("B. Toggle Bookmark   |   Any other key to go back");
+        System.out.print("Choice: ");
+        String input = scanner.nextLine();
+        if (input.equalsIgnoreCase("B")) {
+            mag.toggleBookmark();
+            if (mag.isBookmarked()) {
+                System.out.println("Bookmark added");
+            } else {
+                System.out.println("Bookmark removed");
+            }
+        }
+    }
+
+    // FIX 4: viewBookmarks, submitNewIssue, subscribeToZine, loadSampleData
+    // were placed OUTSIDE the class closing brace. Moved them back inside.
+
+    static void viewBookmarks() {
+        ArrayList<Magazine> bookmarks = archive.getBookmarks();
+        System.out.println("YOUR BOOKMARKS (" + bookmarks.size() + ")");
+
+        if (bookmarks.isEmpty()) {
+            System.out.println("No bookmarks yet.");
+            System.out.println("Open any issue and press B to bookmark it.");
+        } else {
+            archive.printList(bookmarks);
+            int pick = getIntInput("Open one? Enter number (or 0 to go back): ");
+            if (pick >= 1 && pick <= bookmarks.size()) {
+                openIssueDetail(bookmarks.get(pick - 1));
+            }
+        }
+    }
+
+    static void submitNewIssue() {
+        System.out.println("(Educational use only - no distribution license)");
+
+        System.out.print("Magazine title: ");
+        String title = scanner.nextLine();
+
+        System.out.print("Year: ");
+        String year = scanner.nextLine();
+
+        System.out.print("Season: ");
+        String season = scanner.nextLine();
+
+        Magazine newMag = new Magazine(title, year, season);
+
+        System.out.println("Add articles (leave blank and press Enter when done):");
+        int artNum = 1;
+        while (true) {
+            System.out.print("Article " + artNum + ": ");
+            String article = scanner.nextLine();
+            if (article.isEmpty()) break;
+            newMag.addArticle(article);
+            artNum++;
+        }
+
+        archive.addMagazine(newMag);
+        System.out.println("Published! \"" + title + "\" added to the archive.");  // FIX 5: was curly quotes
+    }
+
+    static void subscribeToZine() {
+        System.out.println("MONTHLY SUBSCRIPTION");
+        System.out.println("Get your vintage magzazine shipped to your door.");
+        System.out.println("$8 per month.");
+
+        System.out.print("Your name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Mailing address: ");
+        String address = scanner.nextLine();
+
+        Subscriber sub = new Subscriber(name, email, address);
+        subscribers.add(sub);
+        sub.printConfirmation();
+    }
+
+    static void loadSampleData() {
+        Magazine m1 = new Magazine("Vogue", "1967", "Spring");
+        m1.addArticle("The Mod Revolution: London Takes Over");
+        m1.addArticle("YSL's Le Smoking: Breaking Gender Rules");
+        m1.addArticle("Twiggy: The Face of a Generation");
+
+        Magazine m2 = new Magazine("Harper's Bazaar", "1965", "Fall");
+        m2.addArticle("Givenchy's Little Black Dress Evolved");
+        m2.addArticle("Swinging London: A Style Report");
+
+        Magazine m3 = new Magazine("Vogue Italia", "1974", "Fall");
+        m3.addArticle("Studio 54 and the Disco Wardrobe");
+        m3.addArticle("Halston: America's Designer");
+        m3.addArticle("Glam Rock Meets High Fashion");
+
+        Magazine m4 = new Magazine("Elle", "1978", "Spring");
+        m4.addArticle("Armani's Power Suit Arrives");
+        m4.addArticle("Bohemian Rhapsody: The Prairie Look");
+
+        Magazine m5 = new Magazine("Vogue", "1982", "Winter");
+        m5.addArticle("Mugler's Armor: Fashion as Sculpture");
+        m5.addArticle("Power Dressing in the Boardroom");
+        m5.addArticle("Shoulder Pads: How Big Is Too Big?");
+
+        Magazine m6 = new Magazine("W Magazine", "1988", "Summer");
+        m6.addArticle("Versace: Excess as a Philosophy");
+        m6.addArticle("The Supermodel Era Begins");
+
+        Magazine m7 = new Magazine("Harper's Bazaar", "1994", "Spring");
+        m7.addArticle("Calvin Klein's Quiet Revolution");
+        m7.addArticle("Kate Moss: Anti-Supermodel");
+        m7.addArticle("Grunge Hits the Runway");
+
+        archive.addMagazine(m1);
+        archive.addMagazine(m2);
+        archive.addMagazine(m3);
+        archive.addMagazine(m4);
+        archive.addMagazine(m5);
+        archive.addMagazine(m6);
+        archive.addMagazine(m7);
+    }
+
+    static int getIntInput(String prompt) {
+        System.out.print(prompt);
+        try {
+            return Integer.parseInt(scanner.nextLine());  // FIX 6: was nextLine().  (extra dot)
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+}
 
